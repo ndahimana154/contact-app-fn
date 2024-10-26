@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import AddContactModal from './AddContactModal';
 import UpdateContactModal from './UpdateContactModal';
+import { toast, ToastContainer } from 'react-toastify';
 
 const ContactList = () => {
     const [contacts, setContacts] = useState([]);
@@ -48,9 +49,8 @@ const ContactList = () => {
 
     const handleOnDelete = async (id: any) => {
         try {
-            console.log("SFkimj")
             const response = await deleteContact(id);
-            console.log("MM", response)
+            toast.success(response.message)
             setContacts(prevContacts => prevContacts.filter((contact: any) => contact._id !== id));
         } catch (error) {
 
@@ -58,44 +58,49 @@ const ContactList = () => {
     }
 
     return (
-        <div className="my-10 max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl font-bold text-gray-700">Contacts</h2>
-                <button onClick={() => setShowAddModal(true)} className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
-                    <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                    Add New Contact
-                </button>
+        <>
+            <ToastContainer />
+            <div className="my-10 max-w-4xl mx-auto">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-3xl font-bold text-gray-700">Contacts</h2>
+                    <button onClick={() => setShowAddModal(true)} className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
+                        <FontAwesomeIcon icon={faPlus} className="mr-2" />
+                        Add New Contact
+                    </button>
+                </div>
+                {isLoading ? (
+                    <div className="flex justify-center">
+                        <FontAwesomeIcon icon={faSpinner} spin className="text-blue-500 text-4xl" />
+                    </div>
+                ) : (
+                    <div>
+                        {contacts
+                            .sort((a: any, b: any) => a.names.localeCompare(b.names))
+                            .map((contact: any) => (
+                                <ContactCard
+                                    key={contact._id}
+                                    contact={contact}
+                                    onEdit={() => {
+                                        setCurrentContact(contact);
+                                        setShowUpdateModal(true);
+                                    }}
+                                    onDelete={() => {
+                                        handleOnDelete(contact._id)
+                                    }}
+                                />
+                            ))}
+                    </div>
+                )}
+                {showAddModal && <AddContactModal onClose={() => setShowAddModal(false)} onAdd={setContacts} />}
+                {showUpdateModal && currentContact && (
+                    <UpdateContactModal
+                        contact={currentContact}
+                        onClose={() => setShowUpdateModal(false)}
+                        onUpdate={handleUpdateContact}
+                    />
+                )}
             </div>
-            {isLoading ? (
-                <div className="flex justify-center">
-                    <FontAwesomeIcon icon={faSpinner} spin className="text-blue-500 text-4xl" />
-                </div>
-            ) : (
-                <div>
-                    {contacts.map((contact: any) => (
-                        <ContactCard
-                            key={contact._id}
-                            contact={contact}
-                            onEdit={() => {
-                                setCurrentContact(contact);
-                                setShowUpdateModal(true);
-                            }}
-                            onDelete={() => {
-                                handleOnDelete(contact._id)
-                            }}
-                        />
-                    ))}
-                </div>
-            )}
-            {showAddModal && <AddContactModal onClose={() => setShowAddModal(false)} onAdd={setContacts} />}
-            {showUpdateModal && currentContact && (
-                <UpdateContactModal
-                    contact={currentContact}
-                    onClose={() => setShowUpdateModal(false)}
-                    onUpdate={handleUpdateContact}
-                />
-            )}
-        </div>
+        </>
     );
 };
 
