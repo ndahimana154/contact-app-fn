@@ -1,6 +1,3 @@
-// src/components/Contacts/NewContactForm.js
-import React from 'react';
-
 const NewContactForm = () => {
   return (
     <div className="max-w-md mx-auto my-10 bg-white p-8 rounded-md shadow-md">
