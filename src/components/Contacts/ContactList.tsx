@@ -3,7 +3,11 @@ import ContactCard from './ContactCard';
 import { useEffect, useState } from 'react';
 import { deleteContact, getContacts, updateContact } from '../../api/apiRequests';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import {
+    faPlus,
+    faSpinner,
+    faUser
+} from '@fortawesome/free-solid-svg-icons';
 import AddContactModal from './AddContactModal';
 import UpdateContactModal from './UpdateContactModal';
 import { toast, ToastContainer } from 'react-toastify';
