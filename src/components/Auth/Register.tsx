@@ -25,7 +25,7 @@ const Register = () => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const response = await registerUser(values.email, values.password);
+        await registerUser(values.email, values.password);
         toast.success('Registration successful!');
         setTimeout(() => {
           navigate('/');

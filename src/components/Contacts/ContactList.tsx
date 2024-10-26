@@ -1,18 +1,18 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ContactCard from './ContactCard';
 import { useEffect, useState } from 'react';
-import { deleteContact, getContacts, updateContact } from '../../api/apiRequests';
+import { deleteContact, getContacts } from '../../api/apiRequests';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faPlus,
-    faSpinner,
-    faUser
+    faSpinner
 } from '@fortawesome/free-solid-svg-icons';
 import AddContactModal from './AddContactModal';
 import UpdateContactModal from './UpdateContactModal';
 import { toast, ToastContainer } from 'react-toastify';
 
 const ContactList = () => {
+    const navigate = useNavigate()
     const [contacts, setContacts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showAddModal, setShowAddModal] = useState(false);
@@ -21,11 +21,8 @@ const ContactList = () => {
 
     const token = localStorage.getItem('token');
     if (!token) {
-        return (
-            <div className="text-center text-red-500">
-                Please log in to view your contacts. <Link to="/">Login</Link>
-            </div>
-        );
+        toast.error("Please login first!");
+        navigate("/")
     }
 
     useEffect(() => {
