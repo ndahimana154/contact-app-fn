@@ -1,17 +1,21 @@
-// src/components/Contacts/ContactCard.js
-import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const ContactCard = ({ contact }) => {
+const ContactCard = ({ contact, onEdit, onDelete }: any) => {
     return (
         <div className="p-4 bg-white rounded-md shadow-md mb-4 flex justify-between items-center">
             <div>
-                <h3 className="text-lg font-semibold">{contact.name}</h3>
-                <p>{contact.email}</p>
-                <p>{contact.phone}</p>
+                <h3 className="text-lg font-semibold text-gray-700">{contact.names}</h3>
+                <p className="text-gray-500">{contact.email}</p>
+                <p className="text-gray-500">{contact.phone}</p>
             </div>
             <div>
-                <button className="text-blue-500 hover:underline mr-2">Edit</button>
-                <button className="text-red-500 hover:underline">Delete</button>
+                <button onClick={onEdit} className="text-blue-500 hover:underline mr-2">
+                    <FontAwesomeIcon icon={faEdit} /> Edit
+                </button>
+                <button onClick={onDelete} className="text-red-500 hover:underline">
+                    <FontAwesomeIcon icon={faTrash} /> Delete
+                </button>
             </div>
         </div>
     );
